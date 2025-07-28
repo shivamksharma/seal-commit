@@ -1,0 +1,60 @@
+{
+  "patterns": {
+    "custom": [
+      "PROD_[A-Z_]+_[A-Z0-9]{32}",
+      "staging-key-[a-f0-9]{40}"
+    ],
+    "enabled": [
+      "aws-access-key",
+      "aws-secret-key",
+      "google-api-key",
+      "stripe-key",
+      "github-token",
+      "firebase-key",
+      "jwt-token",
+      "bearer-token",
+      "private-key"
+    ]
+  },
+  "entropy": {
+    "threshold": 4.2,
+    "minLength": 20,
+    "maxLength": 150
+  },
+  "ignore": {
+    "files": [
+      "*.min.js",
+      "*.map",
+      "package-lock.json",
+      "yarn.lock",
+      "pnpm-lock.yaml",
+      "*.test.js",
+      "*.spec.js"
+    ],
+    "directories": [
+      "node_modules",
+      ".git",
+      "dist",
+      "build",
+      "coverage",
+      "__tests__",
+      "test"
+    ],
+    "extensions": [
+      ".min.js",
+      ".lock",
+      ".map",
+      ".log",
+      ".cache"
+    ]
+  },
+  "allowlist": [
+    "test-api-key-for-ci",
+    "example-token-12345"
+  ],
+  "output": {
+    "format": "json",
+    "colors": false,
+    "verbose": true
+  }
+}

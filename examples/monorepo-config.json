@@ -1,0 +1,56 @@
+{
+  "patterns": {
+    "custom": [
+      "WORKSPACE_[A-Z]+_[A-Z0-9]{32}",
+      "shared-secret-[a-f0-9]{40}"
+    ],
+    "enabled": [
+      "aws-access-key",
+      "aws-secret-key",
+      "google-api-key",
+      "github-token",
+      "jwt-token"
+    ]
+  },
+  "entropy": {
+    "threshold": 4.2,
+    "minLength": 20,
+    "maxLength": 120
+  },
+  "ignore": {
+    "files": [
+      "*/package-lock.json",
+      "*/yarn.lock",
+      "*/pnpm-lock.yaml",
+      "lerna.json",
+      "rush.json",
+      "*.min.js",
+      "*.map"
+    ],
+    "directories": [
+      "node_modules",
+      "packages/*/node_modules",
+      "apps/*/node_modules",
+      "packages/*/dist",
+      "apps/*/dist",
+      "packages/*/build",
+      "apps/*/build",
+      ".rush",
+      ".pnpm-store"
+    ],
+    "extensions": [
+      ".lock",
+      ".log",
+      ".cache"
+    ]
+  },
+  "allowlist": [
+    "example-shared-key-12345",
+    "test-workspace-token"
+  ],
+  "output": {
+    "format": "terminal",
+    "colors": true,
+    "verbose": false
+  }
+}

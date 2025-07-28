@@ -1,0 +1,50 @@
+{
+  "patterns": {
+    "custom": [
+      "COMPANY_API_[A-Z0-9]{32}",
+      "internal-secret-[a-f0-9]{64}",
+      "prod-token-[A-Za-z0-9]{40}"
+    ],
+    "enabled": [
+      "aws-access-key",
+      "aws-secret-key",
+      "google-api-key",
+      "stripe-key",
+      "github-token",
+      "firebase-key",
+      "jwt-token",
+      "bearer-token",
+      "private-key"
+    ]
+  },
+  "entropy": {
+    "threshold": 4.5,
+    "minLength": 15,
+    "maxLength": 200
+  },
+  "ignore": {
+    "files": [
+      "*.min.js",
+      "*.map",
+      "*.lock"
+    ],
+    "directories": [
+      "node_modules",
+      ".git",
+      "dist",
+      "build",
+      "coverage"
+    ],
+    "extensions": [
+      ".log",
+      ".tmp",
+      ".cache"
+    ]
+  },
+  "allowlist": [],
+  "output": {
+    "format": "terminal",
+    "colors": true,
+    "verbose": true
+  }
+}

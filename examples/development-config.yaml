@@ -1,0 +1,45 @@
+patterns:
+  custom:
+    - "DEV_API_KEY_[A-Z0-9]{24}"
+    - "test-secret-[a-f0-9]{32}"
+  enabled:
+    - aws-access-key
+    - google-api-key
+    - jwt-token
+  disabled:
+    - bearer-token  # Often used in test files
+
+entropy:
+  threshold: 3.5  # Lower threshold for development
+  minLength: 25
+  maxLength: 80
+
+ignore:
+  files:
+    - "*.test.js"
+    - "*.spec.js"
+    - "mock-*.json"
+    - "test-data.json"
+    - "*.example"
+  directories:
+    - node_modules
+    - test-fixtures
+    - examples
+    - docs
+    - .storybook
+  extensions:
+    - .min.js
+    - .map
+    - .log
+    - .tmp
+
+allowlist:
+  - "example-api-key-12345"
+  - "test-token-not-real"
+  - "demo-secret-for-docs"
+  - "fake-jwt-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+
+output:
+  format: terminal
+  colors: true
+  verbose: false
