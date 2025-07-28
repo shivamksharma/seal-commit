@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# seal-commit: Scan staged files for secrets before commit
+npx seal-commit
+
+# seal-commit: Detect bypass attempts for audit logging
+node scripts/detect-bypass.js
