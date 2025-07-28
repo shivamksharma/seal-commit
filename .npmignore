@@ -1,0 +1,74 @@
+# Test files
+tests/
+*.test.js
+*.spec.js
+test-*
+coverage/
+.nyc_output/
+
+# Development files
+.eslintrc.*
+.prettierrc*
+jest.config.js
+.husky/
+.git/
+.gitignore
+
+# Documentation (keep README.md, CHANGELOG.md, CONFIGURATION.md)
+docs/
+*.md
+!README.md
+!CHANGELOG.md
+!CONFIGURATION.md
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Build artifacts (keep src/)
+build/
+dist/
+lib/
+
+# Development dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+
+# Environment files
+.env*
+
+# Cache files
+.eslintcache
+.prettiercache
+
+# seal-commit specific development files
+.seal-commit/
+test-report.json
+examples/
+!examples/README.md
+
+# Backup files
+*.backup
+*.bak
+*.orig
+
+# Package development files
+*.tgz
+package-lock.json.backup
