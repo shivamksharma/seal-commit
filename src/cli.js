@@ -11,6 +11,7 @@ import { SealCommitError, ErrorHandler } from './errors/SealCommitError.js';
 import { AuditLogger } from './audit/AuditLogger.js';
 import path from 'path';
 import fs from 'fs';
+import { fileURLToPath } from 'url';
 
 /**
  * Main CLI class that handles command-line interface and orchestrates the application
@@ -388,7 +389,14 @@ export class CLI {
 }
 
 // Create and run CLI if this file is executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+// In ES modules, we check if this module is the main entry point
+const currentFilePath = fileURLToPath(import.meta.url);
+const isMainModule = process.argv[1] && (
+  fs.realpathSync(currentFilePath) === fs.realpathSync(process.argv[1]) ||
+  currentFilePath === process.argv[1]
+);
+
+if (isMainModule) {
   const cli = new CLI();
   cli.run().catch(error => {
     console.error('❌ Unexpected error:', error.message);
