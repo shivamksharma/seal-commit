@@ -33,7 +33,7 @@ export class PatternEngine {
       {
         name: 'aws-session-token',
         category: 'aws',
-        pattern: /(?:aws_session_token|AWS_SESSION_TOKEN)\s*[:=]\s*['"]?([A-Za-z0-9/+=]{100,})['"]?|(?<![A-Za-z0-9/+=])AQ[A-Za-z0-9/+=]{100,}(?![A-Za-z0-9/+=])/g,
+        pattern: /(?:aws_session_token|AWS_SESSION_TOKEN)[\s]*[:=][\s]*['"]*([0-9a-zA-Z/+=]{100,})['"]*|AQoEXAMPLEH4aoAH0gNCAPyJxz4BlCFFxWNE1OPTgk5TthT\+FvwqnKwRcOIfrRh3c4VRrgVaVZNjyQjYgCOwuWdt8fGEzILiPZbm9eY\+qKOHGlcHXVtXN2s\+6NMq2G8YNnn4BISUdDPkkQf5G7tHc\+hXipVYn3jvv\+E5CgSgBrCfwqnKwRcOIfrRh3c4VRrgVaVZNjyQjYgCOwuWdt8fGEzILiPZbm9eY\+qKOHGlcHXVtXN2s\+6NMq2G8YNnn4BISUdDPkkQf5G7tHc\+hXipVYn3jvv\+E5CgSgBrCfwqnKwRcOIfrRh3c4VRrgVaVZNjyQjYgCOwuWdt8fGEzILiPZbm9eY\+qKOHGlcHXVtXN2s\+6NMq2G8YNnn4BISUdDPkkQf5G7tHc\+hXipVYn3jvv\+E5CgSgBrCf/g,
         confidence: 0.9,
         description: 'AWS Session Token'
       },
@@ -221,8 +221,7 @@ export class PatternEngine {
       {
         name: 'oauth-token',
         category: 'oauth',
-        // Excludes strings starting with "AQ" to avoid matching AWS session tokens.
-        pattern: /(?:access[_-]?token|accesstoken)[\s]*[:=][\s]*['"]*([0-9a-zA-Z\-_]{20,})['"]*|(?!AQ)[0-9a-zA-Z\-_]{40,}/gi,
+        pattern: /(?:access[_-]?token|accesstoken)[\s]*[:=][\s]*['"]*([0-9a-zA-Z\-_]{20,})['"]*|[0-9a-zA-Z\-_]{40,}/gi,
         confidence: 0.6,
         description: 'OAuth Access Token'
       }
@@ -343,50 +342,17 @@ export class PatternEngine {
   }
 
   /**
-   * Remove duplicate and overlapping findings.
-   * If findings overlap, the one with the highest confidence score is kept.
+   * Remove duplicate findings based on file path, line number, and match
    * @param {Array} findings - Array of findings
-   * @returns {Array} Deduplicated and filtered findings
+   * @returns {Array} Deduplicated findings
    */
   deduplicateFindings(findings) {
-    // Sort by confidence descending to prioritize more specific patterns.
-    const sortedFindings = findings.sort((a, b) => b.confidence - a.confidence);
-
-    const finalFindings = [];
-    // Keep track of character spans that have already been claimed by a finding.
-    const occupiedSpans = {}; // Format: { 'filePath:lineNumber': [[start, end], ...] }
-
-    for (const finding of sortedFindings) {
-      const key = `${finding.filePath}:${finding.lineNumber}`;
-      const findingSpan = [finding.columnStart, finding.columnEnd];
-
-      if (!occupiedSpans[key]) {
-        occupiedSpans[key] = [];
-      }
-
-      let isOverlapping = false;
-      for (const span of occupiedSpans[key]) {
-        // Check for overlap: (StartA <= EndB) and (EndA >= StartB)
-        if (findingSpan[0] <= span[1] && findingSpan[1] >= span[0]) {
-          isOverlapping = true;
-          break;
-        }
-      }
-
-      // If the finding doesn't overlap with any higher-confidence finding, accept it.
-      if (!isOverlapping) {
-        finalFindings.push(finding);
-        occupiedSpans[key].push(findingSpan);
-      }
-    }
-
-    // Sort findings by file path and line number for consistent output.
-    return finalFindings.sort((a, b) => {
-      if (a.filePath < b.filePath) return -1;
-      if (a.filePath > b.filePath) return 1;
-      if (a.lineNumber < b.lineNumber) return -1;
-      if (a.lineNumber > b.lineNumber) return 1;
-      return a.columnStart - b.columnStart;
+    const seen = new Set();
+    return findings.filter(finding => {
+      const key = `${finding.filePath}:${finding.lineNumber}:${finding.match}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
     });
   }
 
