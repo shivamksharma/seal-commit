@@ -1,7 +1,7 @@
-import { execSync, spawn } from 'child_process';
+import { execSync } from 'child_process';
 import { existsSync } from 'fs';
-import { join, resolve } from 'path';
-import { SealCommitError, ErrorCodes, ErrorFactory } from '../errors/SealCommitError.js';
+import { resolve } from 'path';
+import { SealCommitError, ErrorFactory } from '../errors/SealCommitError.js';
 import { PlatformUtils } from '../utils/PlatformUtils.js';
 
 /**
