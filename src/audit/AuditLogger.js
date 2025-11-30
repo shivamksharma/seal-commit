@@ -87,7 +87,7 @@ export class AuditLogger {
    * @param {ScanResult} scanResult - Previous scan results that were bypassed
    * @param {Object} context - Additional context
    */
-  logCommitBypass(event, scanResult = null, context = {}) {
+  logCommitBypass(event, scanResult = null, _context = {}) {
     if (!this.enabled) return;
 
     const logEntry = {
