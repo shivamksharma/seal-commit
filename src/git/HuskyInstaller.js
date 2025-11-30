@@ -1,8 +1,7 @@
-import { execSync, spawn } from 'child_process';
-import { existsSync, readFileSync, writeFileSync, mkdirSync, chmodSync } from 'fs';
-import { join, resolve, dirname } from 'path';
+import { execSync } from 'child_process';
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'fs';
 import { GitUtils } from './GitUtils.js';
-import { SealCommitError, ErrorCodes, ErrorFactory } from '../errors/SealCommitError.js';
+import { SealCommitError, ErrorFactory } from '../errors/SealCommitError.js';
 import { PlatformUtils } from '../utils/PlatformUtils.js';
 
 /**
@@ -323,15 +322,10 @@ node scripts/detect-bypass.js
 ${merged}`;
       }
       
-      // Add our seal-commit command at the end
-      merged += `
-REM seal-commit: Scan staged files for secrets before commit
-call npx seal-commit
-if %errorlevel% neq 0 exit /b %errorlevel%
-
-REM seal-commit: Detect bypass attempts for audit logging
-call node scripts/detect-bypass.js
-`;
+      // Add new content at the end (replace hard-coded content with provided newContent)
+      if (newContent && newContent.length > 0) {
+        merged += `\n${newContent}`;
+      }
     } else {
       // Unix shell script merging
       if (!merged.startsWith('#!/usr/bin/env sh')) {
@@ -341,14 +335,10 @@ call node scripts/detect-bypass.js
 ${merged}`;
       }
 
-      // Add our seal-commit command at the end
-      merged += `
-# seal-commit: Scan staged files for secrets before commit
-npx seal-commit
-
-# seal-commit: Detect bypass attempts for audit logging
-node scripts/detect-bypass.js
-`;
+      // Add new content at the end (replace hard-coded content with provided newContent)
+      if (newContent && newContent.length > 0) {
+        merged += `\n${newContent}`;
+      }
     }
 
     // Convert line endings to platform-appropriate format
