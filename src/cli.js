@@ -7,7 +7,7 @@ import { SecretRedactor } from './redaction/SecretRedactor.js';
 import { gitUtils } from './git/GitUtils.js';
 import { TerminalFormatter } from './output/TerminalFormatter.js';
 import { JSONReportGenerator } from './output/JSONReportGenerator.js';
-import { SealCommitError, ErrorHandler } from './errors/SealCommitError.js';
+import { ErrorHandler } from './errors/SealCommitError.js';
 import { AuditLogger } from './audit/AuditLogger.js';
 import path from 'path';
 import fs from 'fs';
@@ -338,7 +338,7 @@ export class CLI {
           includeStats: true
         });
 
-        const report = await reportGenerator.generateAndWriteReport(
+        await reportGenerator.generateAndWriteReport(
           scanResult, 
           options.report, 
           context
