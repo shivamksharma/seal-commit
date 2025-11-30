@@ -725,7 +725,7 @@ export class ConfigManager {
    * @param {Object} merged - The current merged configuration
    * @returns {boolean} True if array should be merged
    */
-  shouldMergeArray(key, merged) {
+  shouldMergeArray(key, _merged) {
     // Merge arrays for custom patterns and allowlist
     const mergableArrayKeys = ['custom', 'allowlist'];
     return mergableArrayKeys.includes(key);
