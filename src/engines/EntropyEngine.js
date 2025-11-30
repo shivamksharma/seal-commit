@@ -21,11 +21,11 @@ export class EntropyEngine {
       // Minimum percentage of alphanumeric characters
       minAlphanumericRatio: 0.5,
       // Allow special characters that commonly appear in secrets
-      allowedSpecialChars: /[._\-+=\/]/,
+      allowedSpecialChars: new RegExp('[._\\-+=/]'),
       // Exclude strings that are mostly whitespace or common separators
       excludePatterns: [
         /^\s*$/,           // Only whitespace
-        /^[.\-_=\/]+$/,    // Only separators
+        new RegExp('^[.\\-_=/]+$'),    // Only separators
         /^[0-9]+$/,        // Only numbers
         /^[a-zA-Z]+$/      // Only letters (no mixed case complexity)
       ]
@@ -128,7 +128,7 @@ export class EntropyEngine {
     
     let match;
     while ((match = quotedRegex.exec(line)) !== null) {
-      const [fullMatch, value] = match;
+      const [, value] = match;
       if (this.passesCharsetFilter(value)) {
         candidates.push({
           value,
@@ -181,7 +181,7 @@ export class EntropyEngine {
   extractFromBase64Like(line, lineIndex) {
     const candidates = [];
     // Match Base64-like patterns
-    const base64Regex = /[A-Za-z0-9+\/]{20,}={0,2}/g;
+    const base64Regex = new RegExp('[A-Za-z0-9+/]{20,}={0,2}', 'g');
     
     let match;
     while ((match = base64Regex.exec(line)) !== null) {
@@ -209,7 +209,7 @@ export class EntropyEngine {
   extractFromTokens(line, lineIndex) {
     const candidates = [];
     // Match token-like patterns (alphanumeric with some special chars)
-    const tokenRegex = /[A-Za-z0-9._\-+=\/]{20,100}/g;
+    const tokenRegex = new RegExp('[A-Za-z0-9._\\-+=/]{20,100}', 'g');
     
     let match;
     while ((match = tokenRegex.exec(line)) !== null) {
@@ -286,12 +286,12 @@ export class EntropyEngine {
     const withoutPadding = str.replace(/=/g, '');
     
     // Check for invalid characters (anything not in Base64 alphabet)
-    if (!/^[A-Za-z0-9+\/]*$/.test(withoutPadding)) {
+    if (!(new RegExp('^[A-Za-z0-9+/]*$')).test(withoutPadding)) {
       return false;
     }
     
     // Should be mostly Base64 characters
-    const base64Chars = withoutPadding.match(/[A-Za-z0-9+\/]/g) || [];
+    const base64Chars = withoutPadding.match(new RegExp('[A-Za-z0-9+/]', 'g')) || [];
     const ratio = base64Chars.length / withoutPadding.length;
     
     return ratio > 0.9 && paddingCount <= 2;
@@ -312,7 +312,7 @@ export class EntropyEngine {
       /^sample[_-]?/i,               // Sample prefixes
       /^demo[_-]?/i,                 // Demo prefixes
       /^placeholder/i,               // Placeholder text
-      /^[.\-_=\/]+$/                 // Only separators
+      new RegExp('^[.\\-_=/]+$')                 // Only separators
     ];
 
     return commonPatterns.some(pattern => pattern.test(str));
