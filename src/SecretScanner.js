@@ -69,7 +69,6 @@ export class SecretScanner {
    * @returns {Promise<Array>} Array of scan results for each file
    */
   async processFilesInParallel(filePaths) {
-    const results = [];
     const semaphore = new Semaphore(this.maxConcurrency);
 
     const promises = filePaths.map(async (filePath) => {
