@@ -1,0 +1,30 @@
+{
+    "name": "seal-commit",
+    "version": "1.0.0",
+    "description": "A lightweight, zero-config CLI tool to prevent secrets from being committed to Git.",
+    "main": "src/index.js",
+    "bin": {
+        "seal-commit": "./bin/seal-commit.js"
+    },
+    "type": "module",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "security",
+        "git-hook",
+        "pre-commit",
+        "secret-scanner",
+        "credentials"
+    ],
+    "author": "Antigravity",
+    "license": "MIT",
+    "dependencies": {
+        "commander": "^13.0.0",
+        "ignore": "^7.0.5",
+        "picocolors": "^1.1.1"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}
