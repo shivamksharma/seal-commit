@@ -149,7 +149,3 @@ Contributions are welcome!
 5. Submit a Pull Request.
 
 ---
-
-## 📄 License
-
-MIT © [Antigravity]
